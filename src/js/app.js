@@ -16,11 +16,21 @@ const App = {
   },
 	saveToBC :async ()=>{
 		var name=$("#username").val();
-	  await App.sample.saveStr(name,{from:App.myaccount});
+		var salary=$("#usersalry").val();
+	  await App.sample.addEmployee(parseInt(salary),name,{from:App.myaccount});
 	},
 	readFromBC :async ()=>{
-		var abc=await App.sample.str();
-		window.alert(abc);
+		var count=await App.sample.totalEmployees();
+		$("#emps").empty();
+		for(var i=1;i<=count;i++){
+			var employee=await App.sample.employees(i);
+			var id=employee[0];
+			var name=employee[2];
+			var salary=employee[1];
+			var str="<tr><td>"+id+"</td><td>"+name+"</td><td>"+salary+"</td></tr>";
+			$("#emps").append(str);
+		}
+	
 	},
 
 		loadWeb3: async () => {
